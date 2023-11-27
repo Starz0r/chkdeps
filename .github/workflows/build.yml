@@ -34,5 +34,5 @@ jobs:
         if: matrix.channel == 'nightly'
         shell: pwsh
         run: |
-            rustup set default-host ${{ matrix.target }}
+            rustup set default-host nightly-${{ matrix.target }}
             cargo +nightly build
