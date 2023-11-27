@@ -66,7 +66,7 @@ fn main() -> Result<()> {
         use std::io::Write;
         if lver > cver {
             stdbuf.set_color(ColorSpec::new().set_fg(Some(Color::White)))?;
-            write!(&mut stdbuf, "❌🦀 {name}:")?;
+            write!(&mut stdbuf, "❌🦀 {name}: ")?;
 
             stdbuf.set_color(ColorSpec::new().set_fg(Some(Color::Red)))?;
             write!(&mut stdbuf, "{cver} ")?;
