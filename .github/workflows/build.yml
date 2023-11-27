@@ -22,17 +22,38 @@ jobs:
     steps:
       - name: 📦 Checkout
         uses: actions/checkout@v3
+        
+      - name: 🦀 Rustup Default Host
+        if: matrix.channel == 'toolchain'
+        shell: pwsh
+        run: |
+            rustup set default-host ${{ matrix.target }}
+            
+      - name: 🦀 Rustup Default Host on Nightly
+        if: matrix.channel == 'nightly'
+        shell: pwsh
+        run: |
+            rustup set default-host nightly-${{ matrix.target }}
+            
+      - name: 🏗 Cache
+        if: matrix.channel == 'toolchain'
+        uses: Swatinem/rust-cache@v2.7.0
+        with:
+            prefix-key: "${{ matrix.channel }}"
+            shared-key: "${{ matrix.os }}"
+            key: "${{ matrix.target }}"
+            cache-targets: true
+            cache-on-failure: false
+            cache-all-crates: false  
 
       - name: 🛠 Build
         if: matrix.channel == 'toolchain'
         shell: pwsh
         run: |
-            rustup set default-host ${{ matrix.target }}
-            cargo build
+            cargo build 
             
       - name: 🌚 Build on Nightly
         if: matrix.channel == 'nightly'
         shell: pwsh
         run: |
-            rustup set default-host nightly-${{ matrix.target }}
             cargo +nightly build
