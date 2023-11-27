@@ -36,7 +36,6 @@ jobs:
             rustup default nightly
             
       - name: 🏗 Cache
-        if: matrix.channel == 'toolchain'
         uses: Swatinem/rust-cache@v2.7.0
         with:
             prefix-key: "${{ matrix.channel }}"
