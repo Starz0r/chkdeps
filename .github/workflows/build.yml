@@ -30,7 +30,7 @@ jobs:
             cargo build
             
       - name: 🌚 Build on Nightly
-        if: matrix.channel == "nightly"
+        if: matrix.channel == 'nightly'
         shell: pwsh
         run: |
             rustup set default-host ${{ matrix.target }}
