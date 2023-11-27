@@ -12,7 +12,7 @@ jobs:
       fail-fast: true
       matrix:
         os: [windows-2019, windows-2022]
-        channel: [toolchain, nightly]
+        channel: [toolchain]
         target:
           - i686-pc-windows-msvc
           - x86_64-pc-windows-msvc
