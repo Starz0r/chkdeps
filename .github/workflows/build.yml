@@ -56,3 +56,54 @@ jobs:
         shell: pwsh
         run: |
             cargo +nightly build
+            
+  macos:
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [macos-11, macos-12, macos-13]
+        channel: [toolchain]
+        target:
+          # macOS
+          - x86_64-apple-darwin
+          # iOS
+          - aarch64-apple-ios
+          - x86_64-apple-ios
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: 📦 Checkout
+        uses: actions/checkout@v3
+        
+      - name: 🦀 Rustup Default Host
+        if: matrix.channel == 'toolchain'
+        shell: zsh {0}
+        run: |
+            rustup set default-host ${{ matrix.target }}
+            
+      - name: 🦀 Rustup Default Host on Nightly
+        if: matrix.channel == 'nightly'
+        shell: zsh {0}
+        run: |
+            rustup default nightly
+            
+      - name: 🏗 Cache
+        uses: Swatinem/rust-cache@v2.7.0
+        with:
+            prefix-key: "${{ matrix.channel }}"
+            shared-key: "${{ matrix.os }}"
+            key: "${{ matrix.target }}"
+            cache-targets: true
+            cache-on-failure: false
+            cache-all-crates: false  
+
+      - name: 🛠 Build
+        if: matrix.channel == 'toolchain'
+        shell: zsh {0}
+        run: |
+            cargo build 
+            
+      - name: 🌚 Build on Nightly
+        if: matrix.channel == 'nightly'
+        shell: zsh {0}
+        run: |
+            cargo +nightly build
