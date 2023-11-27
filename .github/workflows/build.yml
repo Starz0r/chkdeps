@@ -33,7 +33,7 @@ jobs:
         if: matrix.channel == 'nightly'
         shell: pwsh
         run: |
-            rustup set default-host nightly-${{ matrix.target }}
+            rustup default nightly
             
       - name: 🏗 Cache
         if: matrix.channel == 'toolchain'
